@@ -1,10 +1,11 @@
+import os
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from src.models import ContractChangeOutput
 from dotenv import load_dotenv
 
-# Load enviroments variables
-load_dotenv()   
+load_dotenv()
+
 
 class ExtractionAgent:
     """
@@ -12,8 +13,8 @@ class ExtractionAgent:
     between the original contract and the amendment.
     """
     def __init__(self):
-        # We use structured_output to ensure the response matches our Pydantic model
-        self.llm = ChatOpenAI(model="gpt-4o", temperature=0.0)
+        model = "gpt-4o" if os.getenv("MODEL_TIER", "standard") == "premium" else "gpt-4o-mini"
+        self.llm = ChatOpenAI(model=model, temperature=0.0)
         self.structured_llm = self.llm.with_structured_output(ContractChangeOutput)
         
     def extract_diff(self, original_text: str, amendment_text: str, structural_map: str, run_name="extraction_agent", langfuse_handler=None):

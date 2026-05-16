@@ -1,9 +1,10 @@
+import os
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 
-# Load enviroments variables
-load_dotenv()       
+load_dotenv()
+
 
 class ContextualizationAgent:
     """
@@ -11,8 +12,8 @@ class ContextualizationAgent:
     contract and its amendments.
     """
     def __init__(self):
-        # Using GPT-4o for high-reasoning structural analysis
-        self.llm = ChatOpenAI(model="gpt-4o", temperature=0.0)
+        model = "gpt-4o" if os.getenv("MODEL_TIER", "standard") == "premium" else "gpt-4o-mini"
+        self.llm = ChatOpenAI(model=model, temperature=0.0)
     def analyze(self, original_text: str, amendments_text: str, run_name="contextualization_agent", langfuse_handler=None):
         """
         Creates comparative map of the document structures.
