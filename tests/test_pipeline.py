@@ -32,12 +32,11 @@ class TestRunAnalysisPipeline:
     @patch("main.read_cache", return_value=None)
     @patch("main.cache_key", return_value=("hash_a", "hash_b"))
     @patch("main.warn_if_large")
-    @patch("main.CallbackHandler")
     @patch("main.ExtractionAgent")
     @patch("main.ContextualizationAgent")
     @patch("main.parse_document")
     def test_successful_pipeline(
-        self, mock_parse, mock_ctx_class, mock_ext_class, mock_handler,
+        self, mock_parse, mock_ctx_class, mock_ext_class,
         mock_warn, mock_cache_key, mock_read_cache, mock_write_cache,
     ):
         mock_parse.side_effect = ["Texto del contrato original.", "Texto de la adenda."]
@@ -67,10 +66,9 @@ class TestRunAnalysisPipeline:
     @patch("main.read_cache", return_value=None)
     @patch("main.cache_key", return_value=("hash_a", "hash_b"))
     @patch("main.warn_if_large")
-    @patch("main.CallbackHandler")
     @patch("main.parse_document")
     def test_pipeline_handles_validation_error(
-        self, mock_parse, mock_handler, mock_warn,
+        self, mock_parse, mock_warn,
         mock_cache_key, mock_read_cache, mock_write_cache,
     ):
         mock_parse.side_effect = ValidationError.from_exception_data(
@@ -83,10 +81,9 @@ class TestRunAnalysisPipeline:
     @patch("main.read_cache", return_value=None)
     @patch("main.cache_key", return_value=("hash_a", "hash_b"))
     @patch("main.warn_if_large")
-    @patch("main.CallbackHandler")
     @patch("main.parse_document")
     def test_pipeline_handles_generic_exception(
-        self, mock_parse, mock_handler, mock_warn,
+        self, mock_parse, mock_warn,
         mock_cache_key, mock_read_cache, mock_write_cache,
     ):
         mock_parse.side_effect = Exception("Connection refused")

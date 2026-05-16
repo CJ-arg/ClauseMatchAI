@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 from pydantic import ValidationError
-from langfuse.langchain import CallbackHandler
 from src.document_parser import parse_document
 from src.cache import cache_key, read_cache, write_cache, warn_if_large
 from src.agents.contextualization_agent import ContextualizationAgent
@@ -21,7 +20,11 @@ def run_analysis_pipeline(original_path: str, amendment_path: str):
         print("[Cache] Returning cached result.")
         return cached
 
-    handler = CallbackHandler()
+    if os.getenv("LANGFUSE_ENABLED", "false").lower() == "true":
+        from langfuse.langchain import CallbackHandler
+        handler = CallbackHandler()
+    else:
+        handler = None
 
     try:
         print("Step 1: Parsing documents...")
