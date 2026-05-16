@@ -5,6 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "fastapi>=0.136.1",
+    "httpx>=0.28.1",
     "langchain>=1.2.15",
     "langchain-openai>=1.1.12",
     "langfuse>=4.0.6",
@@ -12,6 +14,8 @@ dependencies = [
     "pymupdf>=1.27.2.2",
     "python-docx>=1.1.2",
     "python-dotenv>=1.2.2",
+    "python-multipart>=0.0.28",
+    "uvicorn>=0.47.0",
 ]
 
 [dependency-groups]
