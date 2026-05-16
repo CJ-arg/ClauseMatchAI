@@ -1,9 +1,9 @@
-# LegalMove AI: Sistema Autónomo multi-agente de Comparación de Contratos
+# ClauseMatch AI: Sistema Autónomo multi-agente de Comparación de Contratos
 # PI Cohorte ai-engineering-pt01
 
-Bienvenido al repositorio de **LegalMove AI**. Este proyecto aborda el desafío operacional de comparar manualmente los contratos originales frente a sus respectivas adendas (enmiendas).
+Bienvenido al repositorio de **ClauseMatch AI**. Este proyecto aborda el desafío operacional de comparar manualmente los contratos originales frente a sus respectivas adendas (enmiendas).
 
-Mediante la implementación de capacidades multimodales de **GPT-4o Vision** y un sistema inteligente multi-agente guiado por **LangChain**, este software autonomiza la tarea de analistas de cumplimiento para identificar, extraer y resumir de forma precisa los impactos legales y adiciones textuales, exportándolos un formato JSON estrictamente validado para producción y sin sesgos.
+Mediante la implementación de un sistema inteligente multi-agente guiado por **LangChain**, este software autonomiza la tarea de analistas de cumplimiento para identificar, extraer y resumir de forma precisa los impactos legales y adiciones textuales, exportándolos un formato JSON estrictamente validado para producción y sin sesgos.
 
 ## Arquitectura y Diagrama de Flujo
 
@@ -36,7 +36,7 @@ Se encarga de identificar qué partes del documento de adenda referencian seccio
 Recibe dicho Mapa Estructural y extrae con exactitud legal las _adiciones, borrados y modificaciones_. Garantiza que la respuesta se restrinja y emita el esquema Pydantic para los atributos `sections_changed`, `topics_touched` y `summary_of_the_change`.
 
 ### Justificación: Long-Context vs RAG
-A diferencia de sistemas robustos documentales que fragmentan la información, LegalMove utiliza una Ingestión de Contexto Largo (*Long-Context*). Debido a que un contrato típico y su adenda suelen pesar una cantidad de tokens asimilable, proveer las actas completas previene el quiebre de la semántica obligatoria evitando un falso positivo ocasionado por la vectorización de bases de datos de un escenario RAG clásico, priorizando la precisión (determinística) por encima del almacenamiento.
+A diferencia de sistemas robustos documentales que fragmentan la información, ClauseMatch AI utiliza una Ingestión de Contexto Largo (*Long-Context*). Debido a que un contrato típico y su adenda suelen pesar una cantidad de tokens asimilable, proveer las actas completas previene el quiebre de la semántica obligatoria evitando un falso positivo ocasionado por la vectorización de bases de datos de un escenario RAG clásico, priorizando la precisión (determinística) por encima del almacenamiento.
 
 ---
 

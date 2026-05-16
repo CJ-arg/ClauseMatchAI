@@ -1,6 +1,6 @@
 # Casos de Prueba (Test Contracts)
 
-Este directorio contiene contratos de prueba diseñados para evaluar la efectividad y precisión del **Agente Autónomo de Comparación de Contratos de LegalMove**.
+Este directorio contiene contratos de prueba diseñados para evaluar la efectividad y precisión del **Agente Autónomo de Comparación de Contratos de ClauseMatch AI**.
 
 Se componen de al menos dos pares de documentos que el sistema procesa.
 
