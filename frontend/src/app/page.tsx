@@ -41,20 +41,35 @@ export default function UploadPage() {
   })
 
   return (
-    <main className="flex-1 flex items-center justify-center p-6">
-      <div className="w-full max-w-lg space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">ClauseMatch AI</h1>
-          <p className="mt-2 text-gray-500">Upload two contract documents to detect every change.</p>
+    <main className="flex-1 px-[var(--grid-margin)] py-16">
+      <div className="grid grid-cols-1 md:grid-cols-[5fr_7fr] gap-[var(--grid-gutter)] max-w-5xl">
+
+        {/* Left column: brand info */}
+        <div className="pt-1 space-y-6">
+          <div>
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-400 mb-3">
+              Contract Analysis
+            </p>
+            <h1 className="text-4xl font-bold leading-tight tracking-tight text-neutral-900">
+              Detect every change.
+            </h1>
+          </div>
+          <p className="text-sm text-neutral-500 leading-relaxed">
+            Upload the original contract and its amendment. The AI pipeline extracts every
+            addition, deletion, and modification — structured and ready to audit.
+          </p>
+          <p className="text-xs text-neutral-400">Supports PDF · DOCX · TXT</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 space-y-6">
+        {/* Right column: form */}
+        <div className="space-y-0">
           <FileField
             label="Original Contract"
             name="original"
             fileName={originalName}
             inputRef={originalRef}
             onChange={(name) => setOriginalName(name)}
+
           />
           <FileField
             label="Amendment"
@@ -64,26 +79,24 @@ export default function UploadPage() {
             onChange={(name) => setAmendmentName(name)}
           />
 
-          {mutation.isError && (
-            <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-2">
-              {(mutation.error as Error).message}
-            </p>
-          )}
+          <div className="border-t border-border pt-6 space-y-3">
+            {mutation.isError && (
+              <p className="text-xs text-[#E04038] border border-[#E04038] px-3 py-2">
+                {(mutation.error as Error).message}
+              </p>
+            )}
 
-          <button
-            onClick={() => mutation.mutate()}
-            disabled={mutation.isPending}
-            className="w-full py-3 px-4 rounded-xl bg-indigo-600 text-white font-semibold
-                       hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed
-                       transition-colors"
-          >
-            {mutation.isPending ? 'Analyzing…' : 'Analyze'}
-          </button>
+            <button
+              onClick={() => mutation.mutate()}
+              disabled={mutation.isPending}
+              className="w-full py-3 px-4 bg-[#E04038] text-white text-xs font-medium
+                         tracking-[0.15em] uppercase hover:opacity-90 disabled:opacity-40
+                         disabled:cursor-not-allowed transition-opacity"
+            >
+              {mutation.isPending ? 'Analyzing…' : 'Analyze'}
+            </button>
+          </div>
         </div>
-
-        <p className="text-center text-sm text-gray-400">
-          Supports PDF, DOCX, and TXT — standard and premium models available
-        </p>
       </div>
     </main>
   )
@@ -103,16 +116,17 @@ function FileField({
   onChange: (name: string) => void
 }) {
   return (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">{label}</label>
+    <div className="border-t border-border py-5 space-y-3">
+      <label className="block text-xs tracking-[0.15em] uppercase text-neutral-500 font-bold">
+        {label}
+      </label>
       <label
         htmlFor={name}
-        className="flex items-center gap-3 cursor-pointer border-2 border-dashed border-gray-200
-                   rounded-xl px-4 py-5 hover:border-indigo-400 transition-colors"
+        className="flex items-center cursor-pointer border border-neutral-200 px-4 py-4
+                   hover:border-[#E04038] transition-colors group"
       >
-        <span className="text-2xl">📄</span>
-        <span className="text-sm text-gray-500 truncate">
-          {fileName || 'Click to choose a file'}
+        <span className="text-xs text-neutral-400 truncate group-hover:text-neutral-600 transition-colors">
+          {fileName || 'Choose file'}
         </span>
       </label>
       <input

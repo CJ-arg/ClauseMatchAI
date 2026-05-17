@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { ContractChangeOutput } from '@/types'
 
 export default function ResultsPage() {
@@ -29,57 +27,74 @@ export default function ResultsPage() {
   }
 
   return (
-    <main className="flex-1 max-w-3xl mx-auto w-full p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Analysis Report</h1>
-        <div className="flex gap-3">
+    <main className="flex-1 px-[var(--grid-margin)] py-16 max-w-5xl">
+      <div className="border-b border-foreground pb-4 mb-12 flex items-end justify-between">
+        <div>
+          <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2">
+            Analysis Report
+          </p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Amendment Diff</h1>
+        </div>
+        <div className="flex gap-4">
           <button
             onClick={downloadJson}
-            className="text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+            className="text-xs tracking-[0.15em] uppercase px-4 py-2 border border-border
+                       hover:border-foreground transition-colors"
           >
             Download JSON
           </button>
           <button
             onClick={() => router.push('/')}
-            className="text-sm px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+            className="text-xs tracking-[0.15em] uppercase px-4 py-2 bg-[#E04038] text-white
+                       hover:opacity-90 transition-opacity"
           >
             Analyze another
           </button>
         </div>
       </div>
 
-      <BadgeSection title="Sections Changed" items={result.sections_changed} variant="secondary" fallback="No sections identified" />
-      <BadgeSection title="Topics Touched" items={result.topics_touched} variant="outline" fallback="No topics identified" />
+      <div>
+        <ReportRow label="Sections Changed">
+          {result.sections_changed.length > 0
+            ? <div className="flex flex-wrap gap-2">
+                {result.sections_changed.map((item) => (
+                  <span key={item} className="text-xs tracking-[0.1em] uppercase border border-foreground px-2 py-1">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            : <span className="text-sm text-muted-foreground">No sections identified</span>
+          }
+        </ReportRow>
 
-      <Card>
-        <CardHeader><CardTitle className="text-base">Summary of Changes</CardTitle></CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-700 leading-relaxed">{result.summary_of_the_change}</p>
-        </CardContent>
-      </Card>
+        <ReportRow label="Topics Touched">
+          {result.topics_touched.length > 0
+            ? <div className="flex flex-wrap gap-2">
+                {result.topics_touched.map((item) => (
+                  <span key={item} className="text-xs tracking-[0.1em] uppercase border border-border px-2 py-1 text-muted-foreground">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            : <span className="text-sm text-muted-foreground">No topics identified</span>
+          }
+        </ReportRow>
+
+        <ReportRow label="Summary">
+          <p className="text-sm text-foreground leading-relaxed">{result.summary_of_the_change}</p>
+        </ReportRow>
+      </div>
     </main>
   )
 }
 
-function BadgeSection({
-  title,
-  items,
-  variant,
-  fallback,
-}: {
-  title: string
-  items: string[]
-  variant: 'secondary' | 'outline'
-  fallback: string
-}) {
+function ReportRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <Card>
-      <CardHeader><CardTitle className="text-base">{title}</CardTitle></CardHeader>
-      <CardContent className="flex flex-wrap gap-2">
-        {items.length > 0
-          ? items.map((item) => <Badge key={item} variant={variant} className="text-sm">{item}</Badge>)
-          : <span className="text-sm text-gray-400">{fallback}</span>}
-      </CardContent>
-    </Card>
+    <div className="grid grid-cols-[3fr_9fr] gap-[var(--grid-gutter)] border-t border-border py-8">
+      <p className="text-xs tracking-[0.15em] uppercase text-muted-foreground font-medium pt-0.5">
+        {label}
+      </p>
+      <div>{children}</div>
+    </div>
   )
 }

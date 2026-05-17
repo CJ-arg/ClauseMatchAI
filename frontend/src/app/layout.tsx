@@ -1,10 +1,13 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import './globals.css'
 import Providers from './providers'
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
-const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
+const inter = Inter({
+  variable: '--font-sans',
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700'],
+})
 
 export const metadata: Metadata = {
   title: 'ClauseMatch AI',
@@ -13,12 +16,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full bg-gray-50 flex flex-col">
+    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+      <body className="min-h-full bg-background flex flex-col">
         <Providers>
-          <nav className="border-b border-gray-200 bg-white px-6 py-3 flex gap-6 text-sm">
-            <a href="/" className="font-semibold text-indigo-600">ClauseMatch AI</a>
-            <a href="/docs" className="text-gray-500 hover:text-gray-900">API Docs</a>
+          <nav className="border-b border-border bg-background px-[var(--grid-margin)] py-4 flex items-center justify-between">
+            <a href="/" className="text-xs font-bold tracking-[0.2em] uppercase text-foreground hover:text-[#E04038] transition-colors">
+              ClauseMatch AI
+            </a>
+            <a href="/docs" className="text-xs tracking-[0.15em] uppercase text-neutral-400 hover:text-neutral-900 transition-colors">
+              API Docs
+            </a>
           </nav>
           {children}
         </Providers>
