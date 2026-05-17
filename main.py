@@ -9,8 +9,11 @@ from src.agents.extraction_agent import ExtractionAgent
 load_dotenv()
 
 
-def run_analysis_pipeline(original_path: str, amendment_path: str):
+def run_analysis_pipeline(original_path: str, amendment_path: str, model_tier: str | None = None):
     print("\n--- Starting ClauseMatch AI Analysis Pipeline ---")
+
+    if model_tier is None:
+        model_tier = os.getenv("MODEL_TIER", "standard")
 
     warn_if_large()
 
@@ -32,14 +35,14 @@ def run_analysis_pipeline(original_path: str, amendment_path: str):
         amendment_text = parse_document(amendment_path)
 
         print("Step 2: Analyzing document structure...")
-        agent_1 = ContextualizationAgent()
+        agent_1 = ContextualizationAgent(model_tier=model_tier)
         structural_map = agent_1.analyze(
             original_text, amendment_text,
             run_name="contextualization_agent", langfuse_handler=handler,
         )
 
         print("Step 3: Extracting changes and validating with Pydantic...")
-        agent_2 = ExtractionAgent()
+        agent_2 = ExtractionAgent(model_tier=model_tier)
         final_report = agent_2.extract_diff(
             original_text, amendment_text, structural_map,
             run_name="extraction_agent", langfuse_handler=handler,

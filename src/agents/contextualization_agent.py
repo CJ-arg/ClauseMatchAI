@@ -11,8 +11,8 @@ class ContextualizationAgent:
     Agent responsible for structural analysis and mapping between the original
     contract and its amendments.
     """
-    def __init__(self):
-        model = "gpt-4o" if os.getenv("MODEL_TIER", "standard") == "premium" else "gpt-4o-mini"
+    def __init__(self, model_tier: str = "standard"):
+        model = "gpt-4o" if model_tier == "premium" else "gpt-4o-mini"
         self.llm = ChatOpenAI(model=model, temperature=0.0)
     def analyze(self, original_text: str, amendments_text: str, run_name="contextualization_agent", langfuse_handler=None):
         """

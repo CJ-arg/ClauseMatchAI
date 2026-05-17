@@ -14,7 +14,7 @@ export default function ResultsPage() {
     const raw = sessionStorage.getItem('clausematch_result')
     if (!raw) { router.replace('/'); return }
     setResult(JSON.parse(raw))
-  }, [router])
+  }, [])
 
   if (!result) return null
 
@@ -48,40 +48,38 @@ export default function ResultsPage() {
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Sections Changed</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-wrap gap-2">
-          {result.sections_changed.length > 0
-            ? result.sections_changed.map((s) => (
-                <Badge key={s} variant="secondary" className="text-sm">{s}</Badge>
-              ))
-            : <span className="text-sm text-gray-400">No sections identified</span>}
-        </CardContent>
-      </Card>
+      <BadgeSection title="Sections Changed" items={result.sections_changed} variant="secondary" fallback="No sections identified" />
+      <BadgeSection title="Topics Touched" items={result.topics_touched} variant="outline" fallback="No topics identified" />
 
       <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Topics Touched</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-wrap gap-2">
-          {result.topics_touched.length > 0
-            ? result.topics_touched.map((t) => (
-                <Badge key={t} variant="outline" className="text-sm">{t}</Badge>
-              ))
-            : <span className="text-sm text-gray-400">No topics identified</span>}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Summary of Changes</CardTitle>
-        </CardHeader>
+        <CardHeader><CardTitle className="text-base">Summary of Changes</CardTitle></CardHeader>
         <CardContent>
           <p className="text-sm text-gray-700 leading-relaxed">{result.summary_of_the_change}</p>
         </CardContent>
       </Card>
     </main>
+  )
+}
+
+function BadgeSection({
+  title,
+  items,
+  variant,
+  fallback,
+}: {
+  title: string
+  items: string[]
+  variant: 'secondary' | 'outline'
+  fallback: string
+}) {
+  return (
+    <Card>
+      <CardHeader><CardTitle className="text-base">{title}</CardTitle></CardHeader>
+      <CardContent className="flex flex-wrap gap-2">
+        {items.length > 0
+          ? items.map((item) => <Badge key={item} variant={variant} className="text-sm">{item}</Badge>)
+          : <span className="text-sm text-gray-400">{fallback}</span>}
+      </CardContent>
+    </Card>
   )
 }

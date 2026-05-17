@@ -1,4 +1,4 @@
-import os
+import asyncio
 import tempfile
 from pathlib import Path
 
@@ -29,16 +29,18 @@ async def analyze(
     amendment_file: UploadFile = File(...),
     model_tier: str = Form("standard"),
 ):
-    os.environ["MODEL_TIER"] = model_tier
+    original_bytes, amendment_bytes = await asyncio.gather(
+        original_file.read(), amendment_file.read()
+    )
 
     with tempfile.TemporaryDirectory() as tmp:
         original_path = Path(tmp) / original_file.filename
         amendment_path = Path(tmp) / amendment_file.filename
 
-        original_path.write_bytes(await original_file.read())
-        amendment_path.write_bytes(await amendment_file.read())
+        original_path.write_bytes(original_bytes)
+        amendment_path.write_bytes(amendment_bytes)
 
-        result = run_analysis_pipeline(str(original_path), str(amendment_path))
+        result = run_analysis_pipeline(str(original_path), str(amendment_path), model_tier=model_tier)
 
     if result is None:
         raise HTTPException(status_code=500, detail="Pipeline failed to produce a result.")

@@ -12,8 +12,8 @@ class ExtractionAgent:
     Agent responsible for identifying and extracting specific legal changes
     between the original contract and the amendment.
     """
-    def __init__(self):
-        model = "gpt-4o" if os.getenv("MODEL_TIER", "standard") == "premium" else "gpt-4o-mini"
+    def __init__(self, model_tier: str = "standard"):
+        model = "gpt-4o" if model_tier == "premium" else "gpt-4o-mini"
         self.llm = ChatOpenAI(model=model, temperature=0.0)
         self.structured_llm = self.llm.with_structured_output(ContractChangeOutput)
         

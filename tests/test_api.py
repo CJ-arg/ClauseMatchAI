@@ -46,7 +46,6 @@ class TestAnalyzeEndpoint:
 
     @patch("api.main.run_analysis_pipeline", return_value=SAMPLE_RESULT)
     def test_analyze_passes_model_tier(self, mock_pipeline):
-        import os
         client.post(
             "/api/v1/analyze",
             files={
@@ -55,14 +54,14 @@ class TestAnalyzeEndpoint:
             },
             data={"model_tier": "premium"},
         )
-        assert os.environ.get("MODEL_TIER") == "premium"
+        mock_pipeline.assert_called_once()
+        assert mock_pipeline.call_args.kwargs["model_tier"] == "premium"
 
     def test_analyze_missing_file_returns_422(self):
         response = client.post(
             "/api/v1/analyze",
             files={
                 "original_file": ("original.txt", TXT_FILE, "text/plain"),
-                # amendment_file intentionally missing
             },
         )
         assert response.status_code == 422
